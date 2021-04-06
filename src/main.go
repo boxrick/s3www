@@ -80,22 +80,12 @@ func getObject(ctx context.Context, s3 *S3, name string) (*minio.Object, error) 
 }
 
 var (
-	endpoint    string
-	accessKey   string
-	secretKey   string
-	address     string
-	bucket      string
 	tlsCert     string
 	tlsKey      string
 	letsEncrypt bool
 )
 
 func init() {
-	flag.StringVar(&endpoint, "endpoint", "", "S3 server endpoint")
-	flag.StringVar(&accessKey, "accessKey", "", "Access key of S3 storage")
-	flag.StringVar(&secretKey, "secretKey", "", "Secret key of S3 storage")
-	flag.StringVar(&bucket, "bucket", "", "Bucket name which hosts static files")
-	flag.StringVar(&address, "address", "127.0.0.1:8080", "Bind to a specific ADDRESS:PORT, ADDRESS can be an IP or hostname")
 	flag.StringVar(&tlsCert, "ssl-cert", "", "TLS certificate for this server")
 	flag.StringVar(&tlsKey, "ssl-key", "", "TLS private key for this server")
 	flag.BoolVar(&letsEncrypt, "lets-encrypt", false, "Enable Let's Encrypt")
@@ -120,6 +110,12 @@ func NewCustomHTTPTransport() *http.Transport {
 		DisableCompression:    true,
 	}
 }
+
+var bucket string = os.Getenv("bucket")
+var endpoint string = os.Getenv("endpoint")
+var accessKey string = os.Getenv("accessKey")
+var secretKey string = os.Getenv("secretKey")
+var address string = os.Getenv("address")
 
 func main() {
 	flag.Parse()

@@ -1,11 +1,9 @@
-FROM golang:1.14
+FROM golang:1.15-alpine
+ADD ./src /usr/local/go/src/app
+WORKDIR /usr/local/go/src/app
+ENV GO111MODULE=on
+RUN go get app
 
-FROM scratch
-EXPOSE 8080
-
-# Copy CA certificates to prevent x509: certificate signed by unknown authority errors
-COPY --from=0 /etc/ssl/certs/ca-certificates.crt /etc/ssl/certs/ca-certificates.crt
-
-COPY s3www /s3www
-
-ENTRYPOINT ["/s3www"]
+FROM alpine:latest
+COPY --from=0 /usr/local/go/bin/app .
+ENTRYPOINT ["./app"]

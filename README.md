@@ -14,4 +14,4 @@ Modify env.list with correct ENV variables
 docker run --env-file env.list  --rm -p 8080:8080 s3www
 ```
 
-Access on https://127.0.0.1:8080
+Access locally on https://127.0.0.1:8080
